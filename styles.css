@@ -28,7 +28,7 @@
   --wb-line: #e0e0e0;
   --sidebar-width: 240px;
   --toc-width: 200px;
-  --content-max-width: 860px;
+  --content-max-width: 100%;
   --font-body: 'TsangerJinKai', 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
   --font-heading: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
 }
@@ -39,52 +39,74 @@ body {
 }
 
 /* ===== 沉浸式阅读模式 ===== */
+body.immersive-mode {
+  background: #fff;
+}
+
 body.immersive-mode #quarto-sidebar,
 body.immersive-mode #quarto-margin-sidebar,
 body.immersive-mode .quarto-secondary-nav,
 body.immersive-mode header.fixed-top,
-body.immersive-mode #quarto-header {
+body.immersive-mode #quarto-header,
+body.immersive-mode #quarto-sidebar-glass {
   display: none !important;
-}
-
-body.immersive-mode .content {
-  max-width: 880px !important;
-  margin: 0 auto;
-  padding: 1.5rem 5rem 4rem 5rem;
-  background: #ffffff;
-  box-shadow: 
-    0 0 0 1px rgba(0, 0, 0, 0.04),
-    0 30px 80px rgba(0, 0, 0, 0.06);
-  min-height: 100vh;
 }
 
 body.immersive-mode #quarto-content {
   padding: 0;
-  background: #e8e6e0;
+  background: #fff;
 }
 
 body.immersive-mode .page-columns {
   display: block;
 }
 
-/* 沉浸模式下隐藏面包屑和标题元数据 */
-body.immersive-mode .quarto-title-meta {
-  display: none;
+body.immersive-mode .content {
+  max-width: 760px !important;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 6rem 2rem;
+  background: #fff;
+  box-shadow: none;
+  min-height: auto;
 }
 
+/* 沉浸模式 - 标题区域 */
 body.immersive-mode .quarto-title-block {
   background: transparent;
   border: none;
   box-shadow: none;
-  padding: 2rem 0 1rem 0;
-  margin-bottom: 1.5rem;
+  padding: 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.5rem;
 }
 
 body.immersive-mode h1.title {
-  font-size: 2.4rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 2px solid var(--wb-line);
-  padding-bottom: 0.8rem;
+  font-size: 2rem;
+}
+
+body.immersive-mode .quarto-title-meta {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--wb-muted);
+}
+
+/* 沉浸模式 - 正文排版精调 */
+body.immersive-mode h2 {
+  margin-top: 2.5rem;
+}
+
+body.immersive-mode p {
+  margin-top: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+/* 沉浸模式 - 底部翻页导航 */
+body.immersive-mode .page-navigation {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #eee;
 }
 
 /* 沉浸模式切换按钮 */
@@ -113,9 +135,13 @@ body.immersive-mode h1.title {
 }
 
 body.immersive-mode .immersive-toggle {
-  background: var(--wb-ink);
+  background: #333;
   color: white;
-  border-color: var(--wb-ink);
+  border-color: #333;
+}
+
+body.immersive-mode .immersive-toggle:hover {
+  background: #555;
 }
 
 /* ===== 核心布局：左导航窄、正文宽、右目录紧凑 ===== */
@@ -142,11 +168,11 @@ body.immersive-mode .immersive-toggle {
   padding-right: 0.5rem;
 }
 
-/* 正文区域 - 更宽 */
+/* 正文区域 - 填满中间列 */
 .content {
-  max-width: var(--content-max-width) !important;
-  margin: 0 auto;
-  padding: 0 2.5rem;
+  max-width: 100% !important;
+  margin: 0;
+  padding: 0 1.8rem;
 }
 
 /* 整体容器不限制宽度 */
@@ -159,9 +185,9 @@ body.immersive-mode .immersive-toggle {
 /* 正文字体 - 仓耳今楷 */
 .quarto-container .content {
   font-family: var(--font-body);
-  font-size: 1.08rem;
-  line-height: 2;
-  letter-spacing: 0.03em;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
 }
 
 h1, h2, h3, h4 {
@@ -171,9 +197,9 @@ h1, h2, h3, h4 {
 }
 
 h1.title {
-  font-size: clamp(2rem, 4vw, 2.85rem);
-  line-height: 1.15;
-  margin-bottom: 0.3rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  line-height: 1.25;
+  margin-bottom: 0.4rem;
 }
 
 h2 {
@@ -184,8 +210,8 @@ h2 {
 
 p {
   text-indent: 2em;
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
 }
 
 li p,
@@ -312,12 +338,13 @@ em {
 }
 
 .quarto-title-block {
-  background: var(--wb-card);
-  border: 1px solid var(--wb-line);
-  border-radius: 14px;
-  padding: 1rem 1.2rem 0.8rem 1.2rem;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-  margin-bottom: 1.15rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0 0 1rem 0;
+  box-shadow: none;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--wb-line);
 }
 
 @media (max-width: 991px) {
@@ -342,23 +369,13 @@ em {
   }
 }
 
-/* 大屏幕优化 - 正文居中且更宽 */
-@media (min-width: 1200px) {
-  .content {
-    max-width: 850px !important;
+/* 大屏幕优化 */
+@media (min-width: 1400px) {
+  #quarto-sidebar {
+    width: 260px !important;
   }
   
   #quarto-margin-sidebar {
-    width: 240px !important;
-  }
-}
-
-@media (min-width: 1400px) {
-  .content {
-    max-width: 900px !important;
-  }
-  
-  #quarto-sidebar {
-    width: 280px !important;
+    width: 220px !important;
   }
 }
