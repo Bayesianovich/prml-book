@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,9 +14,18 @@ permissions:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
