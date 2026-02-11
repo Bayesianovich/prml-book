@@ -11,14 +11,168 @@ description: "PRML 线性回归章节中文导读。"
 - 理解正则化与先验之间的对应关系。
 - 建立贝叶斯线性回归的基本计算流程。
 
-## 关键公式占位
+## 3.1 线性基函数模型
 
-后续补充：
+给定输入 $\mathbf{x}\in\mathbb{R}^D$，回归目标是预测连续变量 $t$。  
+PRML 中常用如下模型：
 
-- 最小二乘闭式解
-- 岭回归与 MAP 估计关系
-- 贝叶斯线性回归后验与预测分布
+$$
+y(\mathbf{x},\mathbf{w}) = \mathbf{w}^\top \boldsymbol{\phi}(\mathbf{x})
+$$
+
+其中 $\boldsymbol{\phi}(\mathbf{x})=[\phi_0(\mathbf{x}),\phi_1(\mathbf{x}),\dots,\phi_{M-1}(\mathbf{x})]^\top$ 是基函数向量，$\mathbf{w}$ 是参数。  
+注意“线性模型”是指对参数 $\mathbf{w}$ 线性，而不要求对输入 $\mathbf{x}$ 线性。比如当 $\phi_j(\mathbf{x})=x^j$ 时，模型对 $x$ 是非线性的，但依然是线性回归。
+
+将 $N$ 个样本写成设计矩阵 $\Phi\in\mathbb{R}^{N\times M}$：
+
+$$
+\Phi =
+\begin{bmatrix}
+\boldsymbol{\phi}(\mathbf{x}_1)^\top \\
+\boldsymbol{\phi}(\mathbf{x}_2)^\top \\
+\vdots \\
+\boldsymbol{\phi}(\mathbf{x}_N)^\top
+\end{bmatrix},
+\quad
+\mathbf{t}=[t_1,\dots,t_N]^\top.
+$$
+
+## 3.2 最小二乘与闭式解
+
+最常见的损失函数是平方误差：
+
+$$
+E_D(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^N \left(t_n - \mathbf{w}^\top\boldsymbol{\phi}(\mathbf{x}_n)\right)^2
+= \frac{1}{2}\|\mathbf{t}-\Phi\mathbf{w}\|_2^2.
+$$
+
+对 $\mathbf{w}$ 求导并令梯度为 0，可得正规方程：
+
+$$
+\Phi^\top\Phi\,\mathbf{w} = \Phi^\top \mathbf{t}.
+$$
+
+若 $\Phi^\top\Phi$ 可逆，则最小二乘解为
+
+$$
+\mathbf{w}_{\text{ML}} = (\Phi^\top\Phi)^{-1}\Phi^\top\mathbf{t}.
+$$
+
+这里的下标 ML（maximum likelihood）先留一个伏笔，后面会看到它正好对应高斯噪声模型下的极大似然估计。
+
+## 3.3 正则化与偏差-方差权衡
+
+高阶基函数或特征数较大时，模型可能过拟合。一个直接办法是在目标函数中加入权重惩罚：
+
+$$
+E(\mathbf{w}) = \frac{1}{2}\|\mathbf{t}-\Phi\mathbf{w}\|_2^2 + \frac{\lambda}{2}\|\mathbf{w}\|_2^2,
+$$
+
+其中 $\lambda>0$ 是正则化系数。对应解为
+
+$$
+\mathbf{w}_{\text{ridge}} = (\Phi^\top\Phi + \lambda I)^{-1}\Phi^\top\mathbf{t}.
+$$
+
+这里的 $\lambda$ 越大，参数被压缩得越强，方差通常下降但偏差会上升。实际中常通过验证集或交叉验证选择 $\lambda$。
+
+## 3.4 概率解释：最小二乘为何等价于 MLE
+
+假设观测由“确定性函数 + 高斯噪声”产生：
+
+$$
+t_n = \mathbf{w}^\top\boldsymbol{\phi}(\mathbf{x}_n) + \epsilon_n,
+\quad
+\epsilon_n \sim \mathcal{N}(0,\beta^{-1}).
+$$
+
+则条件分布为
+
+$$
+p(t_n\mid \mathbf{x}_n,\mathbf{w},\beta)=
+\mathcal{N}\!\left(t_n\mid \mathbf{w}^\top\boldsymbol{\phi}(\mathbf{x}_n),\beta^{-1}\right).
+$$
+
+独立同分布假设下，似然为 $p(\mathbf{t}\mid \mathbf{w},\beta)=\prod_{n=1}^N p(t_n\mid \mathbf{x}_n,\mathbf{w},\beta)$。  
+对数似然（忽略常数项）可写为
+
+$$
+\log p(\mathbf{t}\mid \mathbf{w},\beta)
+=
+-\frac{\beta}{2}\|\mathbf{t}-\Phi\mathbf{w}\|_2^2 + \text{const}.
+$$
+
+因此最大化对数似然，等价于最小化平方误差。也就是说，最小二乘解就是该概率模型下的 $\mathbf{w}_{\text{ML}}$。
+
+## 3.5 岭回归与 MAP 的对应关系
+
+如果进一步给权重放一个零均值高斯先验：
+
+$$
+p(\mathbf{w}\mid \alpha)=\mathcal{N}(\mathbf{w}\mid \mathbf{0},\alpha^{-1}I),
+$$
+
+则后验满足
+
+$$
+p(\mathbf{w}\mid \mathbf{t},\alpha,\beta)
+\propto
+p(\mathbf{t}\mid \mathbf{w},\beta)\,p(\mathbf{w}\mid\alpha).
+$$
+
+取负对数（忽略常数）得到
+
+$$
+-\log p(\mathbf{w}\mid \mathbf{t},\alpha,\beta)
+=
+\frac{\beta}{2}\|\mathbf{t}-\Phi\mathbf{w}\|_2^2
++ \frac{\alpha}{2}\|\mathbf{w}\|_2^2.
+$$
+
+所以 MAP（maximum a posteriori）估计与岭回归完全同构，且有对应关系 $\lambda=\alpha/\beta$。  
+这说明“正则化”可以理解为“先验知识”。
+
+## 3.6 贝叶斯线性回归
+
+与其只取一个点估计（ML 或 MAP），贝叶斯方法直接计算参数后验分布。  
+在线性-高斯设定下，后验仍然是高斯：
+
+$$
+p(\mathbf{w}\mid \mathbf{t},\alpha,\beta)=\mathcal{N}(\mathbf{w}\mid \mathbf{m}_N,\mathbf{S}_N),
+$$
+
+其中
+
+$$
+\mathbf{S}_N^{-1} = \alpha I + \beta \Phi^\top\Phi,
+\quad
+\mathbf{m}_N = \beta \mathbf{S}_N \Phi^\top \mathbf{t}.
+$$
+
+对新样本 $\mathbf{x}_*$，预测分布为
+
+$$
+p(t_*\mid \mathbf{x}_*,\mathbf{t},\alpha,\beta)
+=
+\mathcal{N}\!\left(
+t_* \mid
+\mathbf{m}_N^\top\boldsymbol{\phi}(\mathbf{x}_*),
+\beta^{-1} + \boldsymbol{\phi}(\mathbf{x}_*)^\top \mathbf{S}_N \boldsymbol{\phi}(\mathbf{x}_*)
+\right).
+$$
+
+这个结果很关键：预测方差包含两部分，$\beta^{-1}$ 是观测噪声，$\boldsymbol{\phi}(\mathbf{x}_*)^\top \mathbf{S}_N \boldsymbol{\phi}(\mathbf{x}_*)$ 则反映参数不确定性。样本越少或测试点越偏离训练数据区域，后者通常越大。
+
+## 3.7 实践要点
+
+- 特征工程比“盲目加高阶多项式”更重要，建议先做标准化再回归。
+- 如果只关心点预测，岭回归通常是可靠基线。
+- 如果需要可信区间、不确定性量化或小样本稳健性，优先考虑贝叶斯线性回归。
+- 通过行内公式如 $R^2$、$\lambda$、$\alpha/\beta$ 追踪超参数含义，通过行间公式把推导主链条写清楚。
 
 ## 小结
 
-本章连接了经典回归方法与贝叶斯方法，是进入分类模型前的重要过渡。
+本章从
+$y(\mathbf{x},\mathbf{w})=\mathbf{w}^\top\boldsymbol{\phi}(\mathbf{x})$
+出发，把最小二乘、岭回归、MLE、MAP 与贝叶斯后验预测统一到同一套线性-高斯框架中。  
+掌握这一章后，后续看逻辑回归、神经网络和近似推断时，会更容易理解“损失函数-概率模型-先验假设”之间的对应关系。
