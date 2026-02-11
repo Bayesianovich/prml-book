@@ -1,0 +1,4 @@
+/* Indent every body paragraph by two character widths. */
+.quarto-container p {
+  text-indent: 2em;
+}
