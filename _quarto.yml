@@ -53,7 +53,7 @@ format:
           });
           </script>
     toc: true
-    number-sections: true
+    number-sections: false
     metadata:
       description: "Pattern Recognition and Machine Learning (PRML) 中文导读与学习翻译项目。"
       keywords:
