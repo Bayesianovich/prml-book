@@ -1,8 +1,7 @@
 /* ===== 仓耳今楷 Web 字体 ===== */
 @font-face {
   font-family: 'TsangerJinKai';
-  src: url('./fonts/TsangerJinKai01-W01.woff2') format('woff2'),
-       url('./fonts/TsangerJinKai01-W01.woff') format('woff');
+  src: url('./fonts/TsangerJinKai01-W01.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -10,8 +9,7 @@
 
 @font-face {
   font-family: 'TsangerJinKai';
-  src: url('./fonts/TsangerJinKai01-W03.woff2') format('woff2'),
-       url('./fonts/TsangerJinKai01-W03.woff') format('woff');
+  src: url('./fonts/TsangerJinKai01-W03.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -34,11 +32,34 @@
   --content-max-width: 1080px;
   --font-body: 'TsangerJinKai', 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
   --font-heading: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --wb-h1-size: 1.78rem;
+  --wb-h2-size: 1.42rem;
+  --wb-h3-size: 1.20rem;
 }
 
 body {
+  font-family: var(--font-body);
   color: var(--wb-ink);
   background: var(--wb-bg);
+}
+
+html.theme-dark,
+html.theme-dark body {
+  background: #0b1220;
+}
+
+html.theme-dark #quarto-sidebar,
+html.theme-dark .sidebar.sidebar-navigation {
+  background: #111827;
+}
+
+.quarto-container,
+#quarto-sidebar,
+#quarto-margin-sidebar,
+#TOC,
+.quarto-title-meta,
+.sidebar-navigation {
+  font-family: var(--font-body);
 }
 
 /* ===== 沉浸式阅读模式 ===== */
@@ -219,19 +240,20 @@ body.immersive-mode .immersive-toggle:hover {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-heading);
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-weight: 500;
   letter-spacing: 0.01em;
 }
 
 h1.title {
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  line-height: 1.25;
-  margin-bottom: 0.6rem;
+  font-size: var(--wb-h1-size);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
   letter-spacing: 0.015em;
 }
 
 h2 {
+  font-size: var(--wb-h2-size);
   margin-top: 2.15rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--wb-line);
@@ -244,8 +266,15 @@ p {
 }
 
 h3 {
+  font-size: var(--wb-h3-size);
   margin-top: 1.45rem;
   color: #1f2937;
+}
+
+/* 章节正文里的一级标题（#）与 title 区分开单独控尺寸 */
+.content > h1 {
+  font-size: calc(var(--wb-h1-size) - 0.14rem);
+  margin-top: 1.15rem;
 }
 
 a {
@@ -328,6 +357,8 @@ em {
 }
 
 .callout {
+  background: #ffffff;
+  border-color: #dbe3ef;
   border-radius: 12px;
   border-width: 1px;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
@@ -493,6 +524,10 @@ body.theme-dark {
   background: var(--wb-bg);
 }
 
+html.theme-dark {
+  color-scheme: dark;
+}
+
 body.theme-dark #quarto-content,
 body.theme-dark .content,
 body.theme-dark .page-columns {
@@ -512,7 +547,9 @@ body.theme-dark.immersive-mode .page-navigation {
 }
 
 body.theme-dark #quarto-sidebar,
-body.theme-dark .sidebar.sidebar-navigation {
+body.theme-dark .sidebar.sidebar-navigation,
+html.theme-dark #quarto-sidebar,
+html.theme-dark .sidebar.sidebar-navigation {
   background: rgba(17, 24, 39, 0.88);
   border-right-color: var(--wb-line);
 }
@@ -564,15 +601,48 @@ body.theme-dark .hero-panel {
 body.theme-dark pre.sourceCode,
 body.theme-dark div.sourceCode,
 body.theme-dark pre {
-  background: #0f172a;
-  border-color: #334155;
+  background: #0f1a2d;
+  color: #dbe7ff;
+  border-color: #2e3f59;
   box-shadow: none;
 }
 
 body.theme-dark code:not(pre code) {
-  background: #172336;
-  border-color: #2b3b57;
-  color: #dbeafe;
+  background: #152338;
+  border-color: #314766;
+  color: #d7e8ff;
+}
+
+body.theme-dark pre code,
+body.theme-dark .sourceCode code {
+  color: #dbe7ff;
+}
+
+body.theme-dark .sourceCode span {
+  color: #dbe7ff !important;
+}
+
+body.theme-dark .sourceCode .kw,
+body.theme-dark .sourceCode .cf,
+body.theme-dark .sourceCode .va {
+  color: #8ec5ff !important;
+}
+
+body.theme-dark .sourceCode .dt,
+body.theme-dark .sourceCode .fu {
+  color: #9dd6ff !important;
+}
+
+body.theme-dark .sourceCode .st {
+  color: #9fe8be !important;
+}
+
+body.theme-dark .sourceCode .co {
+  color: #98a7bd !important;
+}
+
+body.theme-dark .sourceCode .op {
+  color: #d5def0 !important;
 }
 
 body.theme-dark table {
@@ -610,6 +680,72 @@ body.theme-dark iframe {
   background: #0f172a;
 }
 
+body.theme-dark .callout {
+  background: #0f1a2d;
+  border-color: #2e415f;
+  box-shadow: none;
+}
+
+body.theme-dark .callout .callout-header,
+body.theme-dark .callout .callout-title-container {
+  background: #13223a;
+  border-bottom: 1px solid #2e415f;
+}
+
+body.theme-dark .callout .callout-title {
+  color: #dce7ff;
+}
+
+body.theme-dark .callout .callout-body {
+  color: #d8e2f0;
+}
+
+/* 暗黑模式搜索组件（侧边栏与弹出搜索） */
+body.theme-dark .quarto-search-button {
+  background: #111b30;
+  color: #dce7ff;
+  border-color: #334867;
+}
+
+body.theme-dark .sidebar-search {
+  background: transparent;
+}
+
+body.theme-dark #quarto-search .aa-Input,
+body.theme-dark #quarto-search .aa-Input:focus,
+body.theme-dark .aa-Input,
+body.theme-dark .aa-Input:focus {
+  background: #111b30 !important;
+  color: #e6eeff !important;
+  border: 1px solid #334867 !important;
+  box-shadow: none !important;
+}
+
+body.theme-dark #quarto-search .aa-Form,
+body.theme-dark .aa-Form {
+  background: #111b30 !important;
+  border: 1px solid #334867 !important;
+}
+
+body.theme-dark #quarto-search .aa-SubmitIcon,
+body.theme-dark #quarto-search .aa-ClearIcon,
+body.theme-dark .aa-SubmitIcon,
+body.theme-dark .aa-ClearIcon {
+  color: #9fb3d3 !important;
+}
+
+body.theme-dark .aa-Panel,
+body.theme-dark .aa-Menu,
+body.theme-dark .search-result {
+  background: #0f1a2d !important;
+  color: #dbe7ff !important;
+  border: 1px solid #334867 !important;
+}
+
+body.theme-dark .aa-Item[aria-selected="true"] {
+  background: #1a2a44 !important;
+}
+
 body.theme-dark #TOC .nav-link {
   color: #aab6ca;
 }
@@ -619,7 +755,8 @@ body.theme-dark #TOC .nav-link:hover {
   color: #dbeafe;
 }
 
-body.theme-dark #quarto-sidebar .sidebar-item .sidebar-link:hover {
+body.theme-dark #quarto-sidebar .sidebar-item .sidebar-link:hover,
+html.theme-dark #quarto-sidebar .sidebar-item .sidebar-link:hover {
   background: rgba(96, 165, 250, 0.18);
 }
 
@@ -636,6 +773,12 @@ body.theme-dark .theme-toggle:hover {
 }
 
 @media (max-width: 991px) {
+  :root {
+    --wb-h1-size: 1.60rem;
+    --wb-h2-size: 1.30rem;
+    --wb-h3-size: 1.12rem;
+  }
+
   .quarto-title-block {
     border-radius: 10px;
     padding: 0.9rem 0.9rem 0.75rem 0.9rem;

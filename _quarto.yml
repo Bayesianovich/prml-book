@@ -24,6 +24,20 @@ format:
   html:
     theme: cosmo
     css: styles.css
+    include-in-header:
+      - text: |
+          <script>
+          (function() {
+            try {
+              var saved = localStorage.getItem('theme-mode');
+              var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+              var dark = saved ? saved === 'dark' : prefersDark;
+              if (dark) {
+                document.documentElement.classList.add('theme-dark');
+              }
+            } catch (e) {}
+          })();
+          </script>
     include-after-body:
       - text: |
           <script>
@@ -41,6 +55,7 @@ format:
 
             function setTheme(mode) {
               const isDark = mode === 'dark';
+              document.documentElement.classList.toggle('theme-dark', isDark);
               document.body.classList.toggle('theme-dark', isDark);
               localStorage.setItem('theme-mode', mode);
               themeToggle.innerHTML = isDark ? '☀️' : '🌙';
