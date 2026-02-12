@@ -17,7 +17,7 @@
 
 :root {
   --wb-bg: #f9f9f7;
-  --wb-ink: #2c2c2c;
+  --wb-ink: #1f2937;
   --wb-muted: #5a5a5a;
   --wb-accent: #1a73e8;
   --wb-accent-2: #0b5cab;
@@ -29,12 +29,12 @@
   --wb-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   --sidebar-width: 240px;
   --toc-width: 200px;
-  --content-max-width: 1080px;
+  --content-max-width: 860px;
   --font-body: 'TsangerJinKai', 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
   --font-heading: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   --wb-h1-size: 1.78rem;
-  --wb-h2-size: 1.42rem;
-  --wb-h3-size: 1.20rem;
+  --wb-h2-size: 1.64rem;
+  --wb-h3-size: 1.34rem;
 }
 
 body {
@@ -234,9 +234,9 @@ body.immersive-mode .immersive-toggle:hover {
 /* 正文字体 - 仓耳今楷 */
 .quarto-container .content {
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.85;
-  letter-spacing: 0.02em;
+  font-size: 1.04rem;
+  line-height: 1.92;
+  letter-spacing: 0.01em;
 }
 
 h1, h2, h3, h4 {
@@ -254,21 +254,30 @@ h1.title {
 
 h2 {
   font-size: var(--wb-h2-size);
-  margin-top: 2.15rem;
-  padding-bottom: 0.25rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.3rem;
   border-bottom: 1px solid var(--wb-line);
+  line-height: 1.4;
 }
 
 p {
-  text-indent: 2em;
-  margin-top: 0.6rem;
-  margin-bottom: 0.6rem;
+  text-indent: 0;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
 }
 
 h3 {
   font-size: var(--wb-h3-size);
-  margin-top: 1.45rem;
+  margin-top: 1.9rem;
+  margin-bottom: 0.65rem;
   color: #1f2937;
+  line-height: 1.45;
+}
+
+h2 + p,
+h3 + p {
+  margin-top: 0.45rem;
 }
 
 /* 章节正文里的一级标题（#）与 title 区分开单独控尺寸 */
@@ -775,17 +784,13 @@ body.theme-dark .theme-toggle:hover {
 @media (max-width: 991px) {
   :root {
     --wb-h1-size: 1.60rem;
-    --wb-h2-size: 1.30rem;
-    --wb-h3-size: 1.12rem;
+    --wb-h2-size: 1.42rem;
+    --wb-h3-size: 1.22rem;
   }
 
   .quarto-title-block {
     border-radius: 10px;
     padding: 0.9rem 0.9rem 0.75rem 0.9rem;
-  }
-
-  p {
-    text-indent: 1.6em;
   }
 
   #quarto-sidebar,
