@@ -28,7 +28,7 @@
   --wb-line: #e0e0e0;
   --sidebar-width: 240px;
   --toc-width: 200px;
-  --content-max-width: 100%;
+  --content-max-width: 880px;
   --font-body: 'TsangerJinKai', 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', serif;
   --font-heading: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
 }
@@ -168,11 +168,11 @@ body.immersive-mode .immersive-toggle:hover {
   padding-right: 0.5rem;
 }
 
-/* 正文区域 - 填满中间列 */
+/* 正文区域 - 控制阅读宽度并居中 */
 .content {
-  max-width: 100% !important;
-  margin: 0;
-  padding: 0 1.8rem;
+  max-width: var(--content-max-width) !important;
+  margin: 0 auto;
+  padding: 0 1.6rem;
 }
 
 /* 整体容器不限制宽度 */
@@ -377,5 +377,9 @@ em {
   
   #quarto-margin-sidebar {
     width: 220px !important;
+  }
+
+  .content {
+    max-width: 920px !important;
   }
 }
